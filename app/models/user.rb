@@ -3,7 +3,8 @@ class User < ActiveRecord::Base
   validates :password,  confirmation: true
 
   def self.authenticate(email, password)
-    if self.all.find_by_email(email) == self.all.find_by_password(password)
+    user = self.find_by_email(email)
+    if user && user.password == password
       return true
     else
       nil
