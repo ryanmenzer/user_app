@@ -12,7 +12,11 @@ get '/logout' do
 end
 
 get '/secret' do
-  erb :secret_page
+  if session[:email]
+    erb :secret_page
+  else
+    erb :reject
+  end
 end
 
 ############### POSTS ####################
