@@ -1,17 +1,26 @@
+enable :sessions
+
 ############### GETS ####################
 
 get '/' do
-  # Look in app/views/index.erb
   erb :index
 end
 
+get '/logout' do
+  session[:email] = nil
+  erb :index
+end
 
+get '/secret' do
+  erb :secret_page
+end
 
 ############### POSTS ####################
 
 post '/create_users' do
   user = User.create(params[:user])
   if user.valid?
+    session[:email] = params[:user][:email]
     erb :secret_page
   else
     redirect to '/'
@@ -20,9 +29,10 @@ end
 
 post '/login' do
   if User.authenticate(params[:user][:email], params[:user][:password])
-    p 'hello'
+    session[:email] = params[:user][:email]
+    erb :secret_page
   else
-    p 'no'
+    erb :index
   end
 end
 
